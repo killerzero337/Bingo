@@ -7,6 +7,7 @@ let etiquetaNumeroBola = document.querySelector("#boton");
 let etiquetaTarjetaJugador = document.querySelector(".gridJugador");
 let etiquetaTarjetaCpu = document.querySelector(".gridCpu");
 let etiquetaNumerosSacados = document.querySelector(".gridSalidas");
+let pulsaciones;
 
 window.onload = function tabla() {
   //let etiqueta = document.querySelectorAll(".gridJugador")[0]; - esto es para elegir uno en concreto, usalo cuando haya varias clases que se llamen igual.
@@ -34,7 +35,7 @@ window.onload = function tabla() {
     if (repetidos.includes(generarNumeroAleatorio)) {
       index--;
     } else {
-      nuevaEtiqueta.className = "cuadroNumero";   
+      nuevaEtiqueta.className = "cuadroNumero";
       nuevaEtiqueta.textContent = generarNumeroAleatorio;
       etiquetaTarjetaCpu.appendChild(nuevaEtiqueta);
       repetidos.push(generarNumeroAleatorio);
@@ -48,27 +49,31 @@ window.onload = function tabla() {
 
 
 etiquetaNumeroBola.addEventListener("click", sacarBola);
+
 function sacarBola() {
   let numeroAleatorio;
-  if (repetidos.length >= 99) {
-    console.log("Fin del programa")
-    etiquetaNumeroBola.textContent = "FIN DEL JUEGO";
-  } else {
+  pulsaciones = setInterval(() => {
 
-    do {
-      console.log("estoy en bucle")
-      numeroAleatorio = Math.floor(Math.random() * 99) + 1;
-    } while (repetidos.includes(numeroAleatorio));
 
-    etiquetaNumeroBola.textContent = numeroAleatorio;
-    let nuevaEtiqueta = document.createElement("div");
-    nuevaEtiqueta.textContent = numeroAleatorio;
-    nuevaEtiqueta.className = "cuadroNumero";
-    etiquetaNumerosSacados.appendChild(nuevaEtiqueta);
-    repetidos.push(numeroAleatorio);
-    comprobarNumero();
-  }
+    if (repetidos.length >= 99) {
+      console.log("Fin del programa")
+      etiquetaNumeroBola.textContent = "FIN DEL JUEGO";
+    } else {
 
+      do {
+        console.log("estoy en bucle")
+        numeroAleatorio = Math.floor(Math.random() * 99) + 1;
+      } while (repetidos.includes(numeroAleatorio));
+
+      etiquetaNumeroBola.textContent = numeroAleatorio;
+      let nuevaEtiqueta = document.createElement("div");
+      nuevaEtiqueta.textContent = numeroAleatorio;
+      nuevaEtiqueta.className = "cuadroNumero";
+      etiquetaNumerosSacados.appendChild(nuevaEtiqueta);
+      repetidos.push(numeroAleatorio);
+      comprobarNumero();
+    }
+  }, 100);
 }
 
 function elegirGanador() {
@@ -115,16 +120,16 @@ function buscarNumero() {
     let numeroJugador = parseInt(vectorEtiquetasJugador[index].textContent);
     let numeroCpu = parseInt(vectorEtiquetasCpu[index].textContent);
 
- if (
-    repetidos.includes(numeroJugador) &&
-    !numerosEncontradosJugador.includes(numeroJugador) &&
-    repetidos.includes(numeroCpu) &&
-    !numerosEncontradosCpu.includes(numeroCpu)
-  ) {
-    cambiarCuadroNumero(index, true);
-    numerosEncontradosJugador.push(numeroJugador);
-    cambiarCuadroNumero(index, false);
-    numerosEncontradosCpu.push(numeroCpu);
+    if (
+      repetidos.includes(numeroJugador) &&
+      !numerosEncontradosJugador.includes(numeroJugador) &&
+      repetidos.includes(numeroCpu) &&
+      !numerosEncontradosCpu.includes(numeroCpu)
+    ) {
+      cambiarCuadroNumero(index, true);
+      numerosEncontradosJugador.push(numeroJugador);
+      cambiarCuadroNumero(index, false);
+      numerosEncontradosCpu.push(numeroCpu);
     } else if (repetidos.includes(numeroJugador) && !numerosEncontradosJugador.includes(numeroJugador)) {
 
       console.log("Numero encontrado: " + numeroJugador + " de jugador");
@@ -138,10 +143,14 @@ function buscarNumero() {
     }
 
   }
-  
+
 }
 
 function comprobarNumero() {
   buscarNumero()
   elegirGanador()
+  if (etiquetaNumeroBola.textContent == "GANA JUGADOR" || etiquetaNumeroBola.textContent == "GANA CPU") {
+    etiquetaNumeroBola.removeEventListener("click", sacarBola)
+    clearInterval(pulsaciones)
+  }
 }

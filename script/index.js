@@ -73,7 +73,7 @@ function sacarBola() {
       repetidos.push(numeroAleatorio);
       comprobarNumero();
     }
-  }, 100);
+  }, 500);
 }
 
 function elegirGanador() {

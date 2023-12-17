@@ -43,7 +43,6 @@ h2 {
 
 .encabezado {
     text-align: center;
-    border: solid black 1px;
     height: 30px;
     width: 100%;
     
@@ -51,7 +50,6 @@ h2 {
 
 .gridJugador,
 .gridCpu {
-
     display: grid;
     grid-template-columns: repeat(5, minmax(40px, 1fr));
     place-content: center;
@@ -73,6 +71,19 @@ h2 {
 
 }
 
+.numeroAparecido{
+    background-color: #062974;
+    color: white;
+    height: 40px;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+    border: solid black 2px;
+    border-radius: 5px;
+    display: flex;
+    gap: 10px;
+}
+
 #boton {
     display: flex;
     place-content: center center;
@@ -91,7 +102,7 @@ h2 {
     margin-top: 50px;
     border: solid white 1px;
     border-radius: 2%;
-    height: 350px;
+    min-height: 400px;
     width: 800px;
 }
 
@@ -102,6 +113,7 @@ h2 {
     place-content: center;
     gap: 5px;
 }
+
 
 
 #boton :hover {
